@@ -1,15 +1,20 @@
 import { expect, test } from '@playwright/test';
-import { faker } from '@faker-js/faker';
 import { getUser } from '../../support/factories/user';
+import { authService } from '../../support/services/auth';
 
 test.describe("POST /auth/register", () => {
+
+    let auth : any;
+
+    test.beforeEach( ( { request } ) => {
+        auth = authService(request);
+    });
+
     test("Deve registrar um novo usuário com sucesso", async ( { request } ) => {
-        
+
         const user = getUser();
 
-        const res = await request.post("http://localhost:3333/api/auth/register", {
-            data: user
-        });
+        const res = await auth.createUser(user);
 
         expect(res.status()).toBe(201);
         const body = await res.json();
@@ -24,13 +29,10 @@ test.describe("POST /auth/register", () => {
         const user = getUser();
 
         // Pre-request to create the user first
-        await request.post("http://localhost:3333/api/auth/register", {
-                data: user
-        });
 
-        const res = await request.post("http://localhost:3333/api/auth/register", {
-            data: user
-        });
+        await auth.createUser(user);
+
+        const res = await auth.createUser(user);
 
         expect(res.status()).toBe(400);
         const body = await res.json();
@@ -60,9 +62,7 @@ test.describe("POST /auth/register", () => {
             password: "pwd123"  
         }
 
-        const res = await request.post("http://localhost:3333/api/auth/register", {
-            data: user
-        });
+        const res = await auth.createUser(user);
 
         expect(res.status()).toBe(400);
         const body = await res.json();
@@ -76,9 +76,7 @@ test.describe("POST /auth/register", () => {
             ////password: "pwd123"  
         }
 
-        const res = await request.post("http://localhost:3333/api/auth/register", {
-            data: user
-        });
+        const res = await auth.createUser(user);
 
         expect(res.status()).toBe(400);
         const body = await res.json();
@@ -92,9 +90,7 @@ test.describe("POST /auth/register", () => {
             password: "pwd123"  
         }
 
-        const res = await request.post("http://localhost:3333/api/auth/register", {
-            data: user
-        });
+        const res = await auth.createUser(user);
 
         expect(res.status()).toBe(400);
         const body = await res.json();
