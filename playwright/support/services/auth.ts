@@ -16,5 +16,12 @@ export const authService = (request :  APIRequestContext) =>{
         });
     }
 
-    return { createUser, login };
+    const getToken = async (auth : IAuth) => {
+        const res = await login(auth);
+        const body = await res.json();
+
+        return body.data.token;
+    }
+
+    return { createUser, login, getToken };
 }
