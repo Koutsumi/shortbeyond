@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:3333/api/auth/login
+  url: {{base_url}}/api/auth/login
   body: json
   auth: inherit
 }
@@ -17,6 +17,12 @@ body:json {
   }
 }
 
+script:post-response {
+  const data = res.getBody();
+  bru.setVar('token',data.data.token);
+}
+
 settings {
   encodeUrl: true
+  timeout: 0
 }
