@@ -1,18 +1,11 @@
-import { expect, test } from '@playwright/test';
-import { authService } from '../../support/services/auth';
+import { expect, test } from '../../support/fixtures/index.ts';
 import { IAuth } from '../../support/services/repository/auth.types';
 import { getUser } from '../../support/factories/user';
 import { IUser } from '../../support/services/repository/user.types';
 
 test.describe("POST /auth/login", () => {
 
-    let auth : any;
-
-    test.beforeEach( ( { request } ) => {
-        auth = authService(request);
-    });
-
-    test("Deve autenticar um usuário com sucesso", async () => {
+    test("Deve autenticar um usuário com sucesso", async ({auth}) => {
         const user : IUser = getUser();
 
         const userCredentials : IAuth = {
@@ -35,7 +28,7 @@ test.describe("POST /auth/login", () => {
         expect(body.data.user).toHaveProperty("email", user.email);
     });
 
-    test("Não deve autenticar um usuário com senha incorreta", async () => {
+    test("Não deve autenticar um usuário com senha incorreta", async ({auth}) => {
         const user : IUser = getUser();
 
         const userCredentials : IAuth = {
@@ -53,7 +46,7 @@ test.describe("POST /auth/login", () => {
         expect(body).toHaveProperty("message", "Credenciais inválidas");
     });
 
-    test("Não deve autenticar um usuário com email não cadastrado", async () => {
+    test("Não deve autenticar um usuário com email não cadastrado", async ({auth}) => {
         const userCredentials : IAuth = {
             email: "email@naocadastrado.com",
             password: "pwd123"
@@ -66,7 +59,7 @@ test.describe("POST /auth/login", () => {
         expect(body).toHaveProperty("message", "Credenciais inválidas");
     });
 
-    test("Não deve autenticar um usuário quando email não é informado", async () => {
+    test("Não deve autenticar um usuário quando email não é informado", async ({auth}) => {
 
         const userCredentials : IAuth = {
             ////email: user.email,
@@ -80,7 +73,7 @@ test.describe("POST /auth/login", () => {
         expect(body).toHaveProperty("message", "O campo 'Email' é obrigatório");
     });
 
-    test("Não deve autenticar um usuário quando password não é informado", async () => {
+    test("Não deve autenticar um usuário quando password não é informado", async ({auth}) => {
 
         const userCredentials : IAuth = {
             email: "fernanda@bacarini.dev",

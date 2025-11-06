@@ -1,16 +1,10 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../support/fixtures/index.ts';
 import { getUser } from '../../support/factories/user';
 import { authService } from '../../support/services/auth';
 
 test.describe("POST /auth/register", () => {
 
-    let auth : any;
-
-    test.beforeEach( ( { request } ) => {
-        auth = authService(request);
-    });
-
-    test("Deve registrar um novo usuário com sucesso", async ( { request } ) => {
+    test("Deve registrar um novo usuário com sucesso", async ( {auth} ) => {
 
         const user = getUser();
 
@@ -25,7 +19,7 @@ test.describe("POST /auth/register", () => {
         expect(body.user).not.toHaveProperty("password");
     });
 
-    test("Não deve registrar um usuário com email já existente", async ( { request } ) => {
+    test("Não deve registrar um usuário com email já existente", async ( {auth} ) => {
         const user = getUser();
 
         // Pre-request to create the user first
@@ -39,7 +33,7 @@ test.describe("POST /auth/register", () => {
         expect(body).toHaveProperty("message", "Este e-mail já está em uso. Por favor, tente outro.");
     });
 
-    test("Não deve registrar um usuário quando e-mail incorreto", async ( { request } ) => {
+    test("Não deve registrar um usuário quando e-mail incorreto", async ( {request} ) => {
         const user = {
             name: `Fernanda Bacarini`,
             email: "fernanda&bacarini.dev",
@@ -55,7 +49,7 @@ test.describe("POST /auth/register", () => {
         expect(body).toHaveProperty("message", "O campo \'Email\' deve ser um email válido");
     });
 
-    test("Não deve registrar um usuário quando name não é informado", async ( { request } ) => {
+    test("Não deve registrar um usuário quando name não é informado", async ( {auth} ) => {
         const user = {
             ////name: `Fernanda Bacarini`,
             email: "fernanda@bacarini.dev",
@@ -69,7 +63,7 @@ test.describe("POST /auth/register", () => {
         expect(body).toHaveProperty("message", "O campo \'Name\' é obrigatório");
     });
 
-    test("Não deve registrar um usuário quando password não é informado", async ( { request } ) => {
+    test("Não deve registrar um usuário quando password não é informado", async ( {auth} ) => {
         const user = {
             name: `Fernanda Bacarini`,
             email: "fernanda@bacarini.dev",
@@ -83,7 +77,7 @@ test.describe("POST /auth/register", () => {
         expect(body).toHaveProperty("message", "O campo \'Password\' é obrigatório");
     });
 
-    test("Não deve registrar um usuário quando email não é informado", async ( { request } ) => {
+    test("Não deve registrar um usuário quando email não é informado", async ( {auth} ) => {
         const user = {
             name: `Fernanda Bacarini`,
             ////email: "fernanda&bacarini.dev",
