@@ -1,0 +1,20 @@
+meta {
+  name: Remove um link
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{base_url}}/api/links/01K961PT6VHVBERD19GG12J8PY
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

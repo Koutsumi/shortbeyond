@@ -1,0 +1,20 @@
+meta {
+  name: Obter lista de links
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/api/links
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
