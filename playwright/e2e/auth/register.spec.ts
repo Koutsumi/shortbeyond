@@ -40,7 +40,7 @@ test.describe("POST /auth/register", () => {
             password: "pwd123"  
         }
 
-        const res = await request.post("http://localhost:3333/api/auth/register", {
+        const res = await request.post("/api/auth/register", {
             data: user
         });
 

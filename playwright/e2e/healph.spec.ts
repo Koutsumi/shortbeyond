@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 test('Deve verificar se a API está online', async ({ request }) => {
-  const response = await request.get('http://localhost:3333/health');
+  const response = await request.get('/health');
 
   expect(response.status()).toBe(200);
 

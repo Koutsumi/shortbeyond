@@ -16,7 +16,6 @@ test.describe("POST /api/links", () => {
     };
 
     test.beforeEach( async ( { auth } ) => {
-
         // Pre-request to create the user first
         await auth.createUser(user);
         token = await auth.getToken(userCredentials);
